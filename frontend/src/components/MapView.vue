@@ -365,6 +365,7 @@
 
                 this.questGivers.length = 0;
                 this.markersCache.filter(it => it.type === "quest").forEach(it => this.questGivers.push(it));
+		this.questGivers.sort((a, b) => a.name > b.name);
             },
             updateCharacters(charactersData) {
                 this.characters.update(charactersData.map(it => new Character(it)),
