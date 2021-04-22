@@ -122,6 +122,7 @@ func main() {
 	http.HandleFunc("/map/api/admin/hideMarker", m.hideMarker)
 	http.HandleFunc("/map/updates", m.watchGridUpdates)
 	http.HandleFunc("/map/grids/", m.gridTile)
+	http.HandleFunc("/map/get/grids/", m.gridTileGet)
 	http.HandleFunc("/map/api/maps", m.getMaps)
 	//http.Handle("/map/grids/", http.StripPrefix("/map/grids", http.FileServer(http.Dir(m.gridStorage))))
 
