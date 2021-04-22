@@ -241,3 +241,37 @@ func (m *Map) gridTile(rw http.ResponseWriter, req *http.Request) {
 
 	http.ServeFile(rw, req, filepath.Join(m.gridStorage, td.File))
 }
+
+func (m *Map) gridTileGet(rw http.ResponseWriter, req *http.Request) {
+	tile := tileRegex.FindStringSubmatch(req.URL.Path)
+	mapid, err := strconv.Atoi(tile[1])
+	if err != nil {
+		http.Error(rw, "request parsing error", http.StatusInternalServerError)
+		return
+	}
+	z, err := strconv.Atoi(tile[2])
+	if err != nil {
+		http.Error(rw, "request parsing error", http.StatusInternalServerError)
+		return
+	}
+	x, err := strconv.Atoi(tile[3])
+	if err != nil {
+		http.Error(rw, "request parsing error", http.StatusInternalServerError)
+		return
+	}
+	y, err := strconv.Atoi(tile[4])
+	if err != nil {
+		http.Error(rw, "request parsing error", http.StatusInternalServerError)
+		return
+	}
+	td := m.GetTile(mapid, Coord{X: x, Y: y}, z)
+
+	if td == nil {
+		http.Error(rw, "file not found", 404)
+		return
+	}
+
+	rw.Header().Set("Cache-Control", "private immutable")
+
+	http.ServeFile(rw, req, filepath.Join(m.gridStorage, td.File))
+}
